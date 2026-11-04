@@ -3,202 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIBRA | Meet. Connect. Enjoy.</title>
+<title>VIBRA | Meet. Connect. Discover.</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;
- background:#100d18;
- color:white;
- font-family:Arial,sans-serif;
+:root {
+  --bg: #090711;
+  --card: #171323;
+  --pink: #f044b8;
+  --purple: #8749ed;
+  --text: #ffffff;
+  --muted: #aaa3b8;
 }
-header{
- padding:18px 6%;
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:#1b1425;
- position:sticky;
- top:0;
- z-index:5;
+
+* {
+  box-sizing: border-box;
 }
-.logo{
- font-size:27px;
- font-weight:bold;
- letter-spacing:3px;
- color:#c77dff;
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
 }
-.logo small{font-size:11px}
-button{
- background:linear-gradient(90deg,#9333ea,#ec4899);
- border:0;
- padding:13px 19px;
- border-radius:8px;
- color:white;
- font-weight:bold;
- cursor:pointer;
+
+header {
+  background: #100c19;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #30223e;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
-button:disabled{opacity:.5}
-.hero{
- text-align:center;
- padding:85px 20px;
- background:linear-gradient(140deg,#28123c,#100d18);
+
+.logo {
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #ff48c4, #9856ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
-.hero h1{font-size:clamp(35px,7vw,58px)}
-.hero h1 span{color:#c77dff}
-.hero p{color:#ccc;line-height:1.8}
-section{padding:35px 6%}
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:18px;
+
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 9px;
+  padding: 12px 18px;
+  color: white;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  font-weight: bold;
 }
-.card{
- background:#20182b;
- padding:25px;
- border-radius:15px;
- border:1px solid #493458;
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
-.card h3{color:#d49aff}
-footer{text-align:center;padding:30px;color:#aaa}
-.modal{
- display:none;
- position:fixed;
- inset:0;
- background:#000e;
- justify-content:center;
- align-items:center;
- padding:20px;
- z-index:10;
- overflow:auto;
+
+.secondary {
+  background: #30263d;
 }
-.form{
- background:#21182c;
- padding:25px;
- border-radius:15px;
- width:100%;
- max-width:390px;
+
+nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-input:not([type=checkbox]){
- width:100%;
- padding:13px;
- margin:9px 0;
- background:#100d18;
- border:1px solid #594369;
- color:white;
- border-radius:8px;
+
+nav button {
+  padding: 9px 12px;
+  font-size: 12px;
 }
-.close{float:right;cursor:pointer}
-.form label{font-size:13px;line-height:1.6}
-#status{color:#d49aff;font-size:13px;line-height:1.5}
-#account{display:none}
-.nav-buttons{display:flex;gap:8px}
-.member{word-break:break-word}
+
+.container {
+  max-width: 1000px;
+  padding: 20px;
+  margin: auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 75px 15px;
+  background:
+    radial-gradient(circle at 50% 40%, #43204e, transparent 65%);
+}
+
+.hero h1 {
+  font-size: clamp(38px, 8vw, 65px);
+  margin: 10px 0;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #ff4cc8, #9a6aff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 550px;
+  margin: 15px auto 25px;
+  line-height: 1.7;
+}
+
+.section {
+  margin: 30px 0;
+  padding: 25px;
+  background: var(--card);
+  border: 1px solid #30243c;
+  border-radius: 16px;
+}
+
+.section h2 {
+  color: #ff65c9;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background: #21192c;
+  border: 1px solid #443050;
+  padding: 22px;
+  border-radius: 14px;
+}
+
+.card h3 {
+  color: #ff71ce;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  background: #0e0b16;
+  border: 1px solid #483653;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+label {
+  color: #d7cddd;
+  font-size: 14px;
+}
+
+.small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #000c;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  z-index: 30;
+}
+
+.modal-box {
+  background: #191323;
+  border: 1px solid #70417e;
+  padding: 25px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.status {
+  color: #ff78cf;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.vip-price {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.message {
+  padding: 12px;
+  background: #281e35;
+  border-radius: 10px;
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  padding: 35px 15px;
+  color: var(--muted);
+  border-top: 1px solid #30223e;
+}
+
+@media(max-width:500px) {
+  header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  nav {
+    justify-content: center;
+  }
+  .section {
+    padding: 17px;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <header>
- <div class="logo">VIBRA <small>18+</small></div>
- <div class="nav-buttons">
-  <button onclick="openForm('login')">LOGIN</button>
-  <button onclick="openForm('signup')">JOIN</button>
- </div>
+  <div class="logo">VIBRA</div>
+
+  <nav>
+    <button class="secondary" onclick="goTo('home')">Home</button>
+    <button class="secondary" onclick="goTo('profile')">Profile</button>
+    <button class="secondary" onclick="goTo('messages')">Messages</button>
+    <button class="secondary" onclick="goTo('vip')">VIP</button>
+    <button onclick="openAuth()">Join / Login</button>
+  </nav>
 </header>
 
-<div class="hero">
- <h1>Meet People.<br><span>Make Connections.</span></h1>
- <p>A social platform for adults to meet, connect and enjoy responsibly.</p>
- <button onclick="openForm('signup')">CREATE ACCOUNT</button>
-</div>
+<main class="container">
 
-<section>
- <h2>Explore VIBRA</h2>
- <div class="grid">
-  <div class="card">
-   <h3>♡ Hookups</h3>
-   <p>Meet adults interested in casual connections.</p>
-  </div>
-  <div class="card">
-   <h3>✦ Discover</h3>
-   <p>Find people and make new connections.</p>
-  </div>
-  <div class="card">
-   <h3>▣ Entertainment</h3>
-   <p>Discover moderated, consensual adult entertainment.</p>
-  </div>
-  <div class="card">
-   <h3>♧ Private Chat</h3>
-   <p>Private communication between members.</p>
-  </div>
- </div>
+<!-- HOME -->
+
+<section class="hero" id="home">
+  <h1>Meet. <span class="gradient">Connect.</span> Discover.</h1>
+
+  <p>
+    Welcome to VIBRA, a members-only social and dating community
+    designed for adults in Uganda.
+  </p>
+
+  <button onclick="openAuth()">Create Your Account</button>
 </section>
 
-<section>
- <div class="card">
-  <h2>Our Community Rules</h2>
-  <p>✓ Adults 18+ only.</p>
-  <p>✓ Consent is compulsory.</p>
-  <p>✓ No leaked or non-consensual content.</p>
-  <p>✓ Respect everyone's privacy.</p>
- </div>
+<!-- ACCOUNT -->
+
+<section class="section">
+  <h2>Your Account</h2>
+
+  <div id="loggedOut">
+    <p class="small">
+      Sign in to manage your profile, connect with other members
+      and access your account.
+    </p>
+    <button onclick="openAuth()">Register / Login</button>
+  </div>
+
+  <div id="loggedIn" class="hidden">
+    <p>Welcome, <strong id="welcomeName"></strong>!</p>
+    <p class="small" id="accountEmail"></p>
+    <p class="small">Account ID: <span id="accountId"></span></p>
+    <button class="secondary" onclick="logout()">Logout</button>
+  </div>
 </section>
 
-<section id="account">
- <div class="card member">
-  <h2>My VIBRA Account</h2>
-  <p id="userEmail"></p>
-  <p id="usernameDisplay"></p>
-  <button onclick="logout()">LOG OUT</button>
- </div>
+<!-- PROFILE -->
+
+<section class="section" id="profile">
+  <h2>My Profile</h2>
+
+  <p class="small">
+    Your profile details are private by default.
+  </p>
+
+  <input id="displayName" placeholder="Display name">
+  <input id="username" placeholder="Username">
+
+  <textarea id="bio" placeholder="Write a short introduction"></textarea>
+
+  <button onclick="saveProfile()">Save Profile</button>
+
+  <div class="status" id="profileStatus"></div>
 </section>
+
+<!-- DISCOVER -->
+
+<section class="section" id="discover">
+  <h2>Discover VIBRA</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h3>💜 Connections</h3>
+      <p>Meet adults who share your interests.</p>
+    </div>
+
+    <div class="card">
+      <h3>✨ Your Community</h3>
+      <p>Build meaningful connections in a respectful environment.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔒 Private Chat</h3>
+      <p>Send private text messages to other registered members.</p>
+    </div>
+  </div>
+
+  <p class="small">
+    Public member discovery is not enabled yet. Member privacy
+    and visibility policies must be configured before launch.
+  </p>
+</section>
+
+<!-- MESSAGES -->
+
+<section class="section" id="messages">
+  <h2>Private Messages</h2>
+
+  <p class="small">
+    You need the other member's account ID to start a conversation.
+  </p>
+
+  <input id="receiverId" placeholder="Receiver account ID">
+
+  <textarea id="messageText" placeholder="Write your message"></textarea>
+
+  <button onclick="sendMessage()">Send Message</button>
+
+  <button class="secondary" onclick="loadMessages()">Refresh Messages</button>
+
+  <div class="status" id="messageStatus"></div>
+
+  <div id="messageList"></div>
+</section>
+
+<!-- VIP -->
+
+<section class="section" id="vip">
+  <h2>💎 VIBRA VIP</h2>
+
+  <p>Choose your preferred membership plan.</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>7 Days VIP</h3>
+      <div class="vip-price">UGX 5,000</div>
+      <p>VIP membership badge</p>
+      <p>Premium community features</p>
+      <button onclick="chooseVIP('7 Days',5000)">Choose Plan</button>
+    </div>
+
+    <div class="card">
+      <h3>30 Days VIP</h3>
+      <div class="vip-price">UGX 15,000</div>
+      <p>VIP membership badge</p>
+      <p>Premium community features</p>
+      <button onclick="chooseVIP('30 Days',15000)">Choose Plan</button>
+    </div>
+
+    <div class="card">
+      <h3>90 Days VIP</h3>
+      <div class="vip-price">UGX 35,000</div>
+      <p>VIP membership badge</p>
+      <p>Premium community features</p>
+      <button onclick="chooseVIP('90 Days',35000)">Choose Plan</button>
+    </div>
+
+  </div>
+
+  <div id="vipPayment" class="card hidden">
+    <h3>Selected Membership</h3>
+
+    <p id="vipSelected"></p>
+
+    <label>Choose payment method</label>
+
+    <select id="vipMethod">
+      <option>MTN Mobile Money</option>
+      <option>Airtel Money</option>
+    </select>
+
+    <p class="small">
+      Payment processing is not connected yet.
+      This is a demonstration only. No money will be charged.
+    </p>
+
+    <button onclick="requestVIP()">Continue</button>
+
+    <div id="vipStatus" class="status"></div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+
+<section class="section" id="safety">
+  <h2>Safety & Reporting</h2>
+
+  <p>
+    VIBRA is intended for adults aged 18 and above.
+    Respect other members, their privacy and their consent.
+  </p>
+
+  <h3>Report a member</h3>
+
+  <input id="reportedId" placeholder="Reported member account ID">
+
+  <select id="reportReason">
+    <option value="">Select reason</option>
+    <option>Harassment</option>
+    <option>Fake account</option>
+    <option>Impersonation</option>
+    <option>Scam or fraud</option>
+    <option>Non-consensual content</option>
+    <option>Other safety concern</option>
+  </select>
+
+  <button onclick="reportMember()">Submit Report</button>
+
+  <div id="reportStatus" class="status"></div>
+</section>
+
+<!-- RULES -->
+
+<section class="section">
+  <h2>Community Rules</h2>
+
+  <ul class="small">
+    <li>All members must be at least 18 years old.</li>
+    <li>Respect consent and personal boundaries.</li>
+    <li>No harassment, threats or exploitation.</li>
+    <li>No fake accounts or impersonation.</li>
+    <li>No stolen or non-consensual intimate images.</li>
+    <li>Do not share another person's private information.</li>
+    <li>Report suspicious or harmful activity.</li>
+  </ul>
+</section>
+
+</main>
 
 <footer>
- © 2026 VIBRA Uganda | Adults only
+  <div class="logo">VIBRA</div>
+  <p>Meet. Connect. Discover.</p>
+  <p class="small">Uganda • Adults 18+ only</p>
+  <p class="small">© 2026 VIBRA. All rights reserved.</p>
 </footer>
 
-<div class="modal" id="modal">
- <div class="form">
-  <span class="close" onclick="closeForm()">✕</span>
+<!-- AUTH MODAL -->
 
-  <h2 id="formTitle">Join VIBRA</h2>
+<div class="modal" id="authModal">
+  <div class="modal-box">
 
-  <form id="authForm">
-   <input id="email" type="email" placeholder="Email address" required>
-   <input id="password" type="password"
-    placeholder="Password (minimum 8 characters)"
-    minlength="8" required>
+    <h2>Welcome to <span class="gradient">VIBRA</span></h2>
 
-   <div id="signupFields">
-    <input id="username" placeholder="Username" minlength="3" maxlength="30">
-    <input id="dob" type="date">
+    <div id="signupFields">
 
-    <label>
-     <input id="ageConfirm" type="checkbox">
-     I confirm I am 18 or older.
-    </label>
-    <br><br>
-    <label>
-     <input id="terms" type="checkbox">
-     I agree to the community rules.
-    </label>
-   </div>
+      <h3>Create Account</h3>
 
-   <br>
-   <button type="submit" id="submitBtn">CREATE ACCOUNT</button>
-   <p id="status"></p>
-  </form>
- </div>
+      <input id="signupUsername" placeholder="Username">
+
+      <input id="signupEmail" type="email" placeholder="Email address">
+
+      <input id="signupPassword" type="password" placeholder="Password (minimum 8 characters)">
+
+      <label>Date of birth</label>
+      <input id="signupDOB" type="date">
+
+      <label>
+        <input type="checkbox" id="ageConfirm" style="width:auto">
+        I confirm I am at least 18 years old.
+      </label>
+
+      <br><br>
+
+      <label>
+        <input type="checkbox" id="termsConfirm" style="width:auto">
+        I accept the community rules.
+      </label>
+
+      <br><br>
+
+      <button onclick="signup()">Create Account</button>
+
+      <p class="small">
+        Already registered?
+        <a href="#" onclick="showLogin()" style="color:#ff70ce">Login</a>
+      </p>
+
+    </div>
+
+    <div id="loginFields" class="hidden">
+
+      <h3>Login</h3>
+
+      <input id="loginEmail" type="email" placeholder="Email address">
+
+      <input id="loginPassword" type="password" placeholder="Password">
+
+      <button onclick="login()">Login</button>
+
+      <p class="small">
+        New to VIBRA?
+        <a href="#" onclick="showSignup()" style="color:#ff70ce">Create account</a>
+      </p>
+
+    </div>
+
+    <div class="status" id="authStatus"></div>
+
+    <br>
+
+    <button class="secondary" onclick="closeAuth()">Close</button>
+
+  </div>
 </div>
 
 <script>
-// ==================================
-// VIBRA SUPABASE CONNECTION
-// ==================================
+
+// ====================================
+// SUPABASE CONNECTION
+// ====================================
 
 const SUPABASE_URL =
 "https://revrcpqwqgdewsjazpjn.supabase.co";
@@ -207,196 +549,533 @@ const SUPABASE_KEY =
 "sb_publishable_f4DOhI3WSVWuQKs4rVKVNQ_SUSwACae";
 
 const db = window.supabase.createClient(
- SUPABASE_URL,
- SUPABASE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
-// ==================================
-// GENERAL FUNCTIONS
-// ==================================
+let currentUser = null;
+let selectedVIP = null;
 
-let mode = "signup";
+// ====================================
+// NAVIGATION
+// ====================================
 
-function openForm(type){
- mode = type;
-
- document.getElementById("modal").style.display="flex";
-
- document.getElementById("signupFields").style.display =
- type==="signup" ? "block" : "none";
-
- document.getElementById("formTitle").innerText =
- type==="signup" ? "Join VIBRA" : "Welcome Back";
-
- document.getElementById("submitBtn").innerText =
- type==="signup" ? "CREATE ACCOUNT" : "LOGIN";
-
- document.getElementById("status").innerText="";
+function goTo(id) {
+  document.getElementById(id).scrollIntoView({
+    behavior: "smooth"
+  });
 }
 
-function closeForm(){
- document.getElementById("modal").style.display="none";
+// ====================================
+// AUTH MODAL
+// ====================================
+
+function openAuth() {
+  document.getElementById("authModal").style.display = "flex";
 }
 
-function calculateAge(date){
- const birth=new Date(date+"T00:00:00");
- const now=new Date();
-
- let age=now.getFullYear()-birth.getFullYear();
-
- if(now.getMonth()<birth.getMonth() ||
- (now.getMonth()===birth.getMonth() &&
- now.getDate()<birth.getDate())){
- age--;
- }
-
- return age;
+function closeAuth() {
+  document.getElementById("authModal").style.display = "none";
 }
 
-// ==================================
-// SIGNUP AND LOGIN
-// ==================================
-
-document.getElementById("authForm").addEventListener(
- "submit", async function(e){
-
- e.preventDefault();
-
- const status=document.getElementById("status");
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
-
- status.innerText="Connecting to VIBRA...";
-
- try{
-
- if(mode==="signup"){
-
- const username=document.getElementById("username").value.trim();
- const dob=document.getElementById("dob").value;
-
- if(password.length<8)
- throw Error("Password must have at least 8 characters.");
-
- if(username.length<3)
- throw Error("Username must have at least 3 characters.");
-
- if(!dob || calculateAge(dob)<18)
- throw Error("You must be at least 18 years old.");
-
- if(!document.getElementById("ageConfirm").checked)
- throw Error("Please confirm your age.");
-
- if(!document.getElementById("terms").checked)
- throw Error("Please accept the community rules.");
-
- const {data,error}=await db.auth.signUp({
-  email:email,
-  password:password
- });
-
- if(error) throw error;
-
- if(data.user){
-
-  const {error:profileError}=await db
-   .from("profiles")
-   .insert({
-    id:data.user.id,
-    username:username,
-    date_of_birth:dob,
-    country:"Uganda"
-   });
-
-  if(profileError) throw profileError;
- }
-
- status.innerText =
- "Registration submitted! Check your email for confirmation.";
-
- }else{
-
- const {data,error}=await db.auth.signInWithPassword({
-  email:email,
-  password:password
- });
-
- if(error) throw error;
-
- status.innerText="Welcome back!";
-
- await showAccount(data.user);
-
- closeForm();
-
- }
-
- }catch(error){
-
- status.innerText=error.message;
-
- }
-
-});
-
-// ==================================
-// MEMBER ACCOUNT
-// ==================================
-
-async function showAccount(user){
-
- document.getElementById("account").style.display="block";
-
- document.getElementById("userEmail").innerText =
- "Email: "+user.email;
-
- const {data,error}=await db
-  .from("profiles")
-  .select("username")
-  .eq("id",user.id)
-  .maybeSingle();
-
- document.getElementById("usernameDisplay").innerText =
- error ? "Profile unavailable" :
- "Username: "+(data?.username || "Not set");
+function showLogin() {
+  document.getElementById("signupFields").classList.add("hidden");
+  document.getElementById("loginFields").classList.remove("hidden");
+  document.getElementById("authStatus").textContent = "";
 }
 
-// ==================================
-// LOGOUT
-// ==================================
-
-async function logout(){
-
- const {error}=await db.auth.signOut();
-
- if(error){
-  alert(error.message);
-  return;
- }
-
- document.getElementById("account").style.display="none";
-
+function showSignup() {
+  document.getElementById("loginFields").classList.add("hidden");
+  document.getElementById("signupFields").classList.remove("hidden");
+  document.getElementById("authStatus").textContent = "";
 }
 
-// ==================================
-// RESTORE SESSION
-// ==================================
+// ====================================
+// AGE CHECK
+// ====================================
 
-db.auth.onAuthStateChange((event,session)=>{
+function isAdult(dob) {
+  if (!dob) return false;
 
- if(session?.user){
+  const birth = new Date(dob + "T00:00:00");
+  const today = new Date();
 
-  showAccount(session.user);
+  let age = today.getFullYear() - birth.getFullYear();
 
- }else{
+  const monthDifference = today.getMonth() - birth.getMonth();
 
-  document.getElementById("account").style.display="none";
+  if (
+    monthDifference < 0 ||
+    (monthDifference === 0 && today.getDate() < birth.getDate())
+  ) {
+    age--;
+  }
 
- }
+  return age >= 18;
+}
 
-});
+// ====================================
+// SIGNUP
+// ====================================
+
+async function signup() {
+
+  const username =
+    document.getElementById("signupUsername").value.trim();
+
+  const email =
+    document.getElementById("signupEmail").value.trim();
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  const dob =
+    document.getElementById("signupDOB").value;
+
+  const ageConfirmed =
+    document.getElementById("ageConfirm").checked;
+
+  const termsConfirmed =
+    document.getElementById("termsConfirm").checked;
+
+  const status = document.getElementById("authStatus");
+
+  status.textContent = "";
+
+  if (!username || !email || !password || !dob) {
+    status.textContent = "Please complete all fields.";
+    return;
+  }
+
+  if (password.length < 8) {
+    status.textContent = "Password must contain at least 8 characters.";
+    return;
+  }
+
+  if (!isAdult(dob) || !ageConfirmed) {
+    status.textContent = "VIBRA is only available to adults aged 18+.";
+    return;
+  }
+
+  if (!termsConfirmed) {
+    status.textContent = "Please accept the community rules.";
+    return;
+  }
+
+  status.textContent = "Creating your account...";
+
+  const { data, error } = await db.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        username,
+        date_of_birth: dob
+      }
+    }
+  });
+
+  if (error) {
+    status.textContent = error.message;
+    return;
+  }
+
+  if (data.session) {
+    status.textContent = "Account created successfully!";
+    await refreshAccount(data.session.user);
+  } else {
+    status.textContent =
+      "Registration received. Check your email to confirm your account, then log in.";
+  }
+}
+
+// ====================================
+// LOGIN
+// ====================================
+
+async function login() {
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const status = document.getElementById("authStatus");
+
+  status.textContent = "Logging in...";
+
+  const { data, error } =
+    await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if (error) {
+    status.textContent = error.message;
+    return;
+  }
+
+  status.textContent = "Login successful!";
+
+  await refreshAccount(data.user);
+
+  closeAuth();
+}
+
+// ====================================
+// ACCOUNT DISPLAY
+// ====================================
+
+async function refreshAccount(user) {
+
+  currentUser = user;
+
+  document.getElementById("loggedOut").classList.add("hidden");
+  document.getElementById("loggedIn").classList.remove("hidden");
+
+  document.getElementById("welcomeName").textContent =
+    user.user_metadata?.username || user.email;
+
+  document.getElementById("accountEmail").textContent =
+    user.email;
+
+  document.getElementById("accountId").textContent =
+    user.id;
+
+  await loadProfile();
+}
+
+async function logout() {
+
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  currentUser = null;
+
+  document.getElementById("loggedIn").classList.add("hidden");
+  document.getElementById("loggedOut").classList.remove("hidden");
+
+  alert("You have logged out.");
+}
+
+// ====================================
+// LOAD PROFILE
+// ====================================
+
+async function loadProfile() {
+
+  if (!currentUser) return;
+
+  const { data, error } = await db
+    .from("profiles")
+    .select("username,display_name,bio")
+    .eq("id", currentUser.id)
+    .maybeSingle();
+
+  if (error) {
+    document.getElementById("profileStatus").textContent =
+      error.message;
+    return;
+  }
+
+  if (data) {
+    document.getElementById("username").value =
+      data.username || "";
+
+    document.getElementById("displayName").value =
+      data.display_name || "";
+
+    document.getElementById("bio").value =
+      data.bio || "";
+  }
+}
+
+// ====================================
+// SAVE PROFILE
+// ====================================
+
+async function saveProfile() {
+
+  if (!currentUser) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const displayName =
+    document.getElementById("displayName").value.trim();
+
+  const bio =
+    document.getElementById("bio").value.trim();
+
+  const status = document.getElementById("profileStatus");
+
+  if (!username) {
+    status.textContent = "Username is required.";
+    return;
+  }
+
+  const { error } = await db
+    .from("profiles")
+    .update({
+      username,
+      display_name: displayName,
+      bio
+    })
+    .eq("id", currentUser.id);
+
+  if (error) {
+    status.textContent = error.message;
+    return;
+  }
+
+  status.textContent = "Profile updated successfully.";
+
+  document.getElementById("welcomeName").textContent =
+    displayName || username;
+}
+
+// ====================================
+// SEND MESSAGE
+// ====================================
+
+async function sendMessage() {
+
+  if (!currentUser) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const receiver =
+    document.getElementById("receiverId").value.trim();
+
+  const message =
+    document.getElementById("messageText").value.trim();
+
+  const status = document.getElementById("messageStatus");
+
+  if (!receiver || !message) {
+    status.textContent = "Enter a receiver ID and message.";
+    return;
+  }
+
+  if (receiver === currentUser.id) {
+    status.textContent = "You cannot message yourself.";
+    return;
+  }
+
+  const { error } = await db
+    .from("messages")
+    .insert({
+      sender_id: currentUser.id,
+      receiver_id: receiver,
+      message_text: message
+    });
+
+  if (error) {
+    status.textContent = error.message;
+    return;
+  }
+
+  document.getElementById("messageText").value = "";
+
+  status.textContent = "Message sent.";
+
+  await loadMessages();
+}
+
+// ====================================
+// LOAD MESSAGES
+// ====================================
+
+async function loadMessages() {
+
+  if (!currentUser) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const list = document.getElementById("messageList");
+
+  list.innerHTML = "Loading messages...";
+
+  const { data, error } = await db
+    .from("messages")
+    .select("sender_id,receiver_id,message_text,created_at")
+    .or(
+      `sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`
+    )
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  if (error) {
+    list.textContent = error.message;
+    return;
+  }
+
+  list.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    list.textContent = "No messages yet.";
+    return;
+  }
+
+  data.forEach(message => {
+
+    const item = document.createElement("div");
+    item.className = "message";
+
+    const direction =
+      message.sender_id === currentUser.id
+        ? "You sent:"
+        : "Received:";
+
+    const heading = document.createElement("strong");
+    heading.textContent = direction;
+
+    const body = document.createElement("p");
+    body.textContent = message.message_text;
+
+    const time = document.createElement("small");
+    time.textContent = new Date(message.created_at).toLocaleString();
+
+    item.append(heading, body, time);
+
+    list.appendChild(item);
+  });
+}
+
+// ====================================
+// VIP PLANS
+// ====================================
+
+function chooseVIP(plan, price) {
+
+  selectedVIP = {
+    plan,
+    price
+  };
+
+  document.getElementById("vipSelected").textContent =
+    plan + " VIP — UGX " + price.toLocaleString();
+
+  document.getElementById("vipPayment").classList.remove("hidden");
+
+  document.getElementById("vipStatus").textContent = "";
+
+  document.getElementById("vipPayment").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function requestVIP() {
+
+  if (!currentUser) {
+    alert("Please log in before choosing VIP.");
+    openAuth();
+    return;
+  }
+
+  if (!selectedVIP) return;
+
+  const method =
+    document.getElementById("vipMethod").value;
+
+  document.getElementById("vipStatus").textContent =
+    "Demo only: " + method +
+    " payment is not connected. No payment has been made and VIP is not activated.";
+}
+
+// ====================================
+// REPORT MEMBER
+// ====================================
+
+async function reportMember() {
+
+  if (!currentUser) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const reportedId =
+    document.getElementById("reportedId").value.trim();
+
+  const reason =
+    document.getElementById("reportReason").value;
+
+  const status =
+    document.getElementById("reportStatus");
+
+  if (!reportedId || !reason) {
+    status.textContent = "Enter the member ID and report reason.";
+    return;
+  }
+
+  if (reportedId === currentUser.id) {
+    status.textContent = "You cannot report your own account.";
+    return;
+  }
+
+  const { error } = await db
+    .from("reports")
+    .insert({
+      reporter_id: currentUser.id,
+      reported_user_id: reportedId,
+      reason
+    });
+
+  if (error) {
+    status.textContent = error.message;
+    return;
+  }
+
+  status.textContent = "Report submitted successfully.";
+
+  document.getElementById("reportedId").value = "";
+}
+
+// ====================================
+// RESTORE LOGIN SESSION
+// ====================================
+
+async function startApp() {
+
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (data.session) {
+    await refreshAccount(data.session.user);
+  }
+
+  db.auth.onAuthStateChange((event, session) => {
+
+    if (event === "SIGNED_OUT") {
+      currentUser = null;
+
+      document.getElementById("loggedIn").classList.add("hidden");
+      document.getElementById("loggedOut").classList.remove("hidden");
+
+    } else if (event === "SIGNED_IN" && session) {
+      refreshAccount(session.user);
+    }
+
+  });
+}
+
+startApp();
 
 </script>
 
 </body>
-  </html>
+</html>
