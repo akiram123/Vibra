@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIBRA | Meet. Connect. Enjoy.</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#100d18;
+ color:white;
+ font-family:Arial,sans-serif;
+}
+header{
+ padding:18px 6%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:#1b1425;
+ position:sticky;
+ top:0;
+ z-index:5;
+}
+.logo{
+ font-size:27px;
+ font-weight:bold;
+ letter-spacing:3px;
+ color:#c77dff;
+}
+.logo small{font-size:11px}
+button{
+ background:linear-gradient(90deg,#9333ea,#ec4899);
+ border:0;
+ padding:13px 19px;
+ border-radius:8px;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+}
+button:disabled{opacity:.5}
+.hero{
+ text-align:center;
+ padding:85px 20px;
+ background:linear-gradient(140deg,#28123c,#100d18);
+}
+.hero h1{font-size:clamp(35px,7vw,58px)}
+.hero h1 span{color:#c77dff}
+.hero p{color:#ccc;line-height:1.8}
+section{padding:35px 6%}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:18px;
+}
+.card{
+ background:#20182b;
+ padding:25px;
+ border-radius:15px;
+ border:1px solid #493458;
+}
+.card h3{color:#d49aff}
+footer{text-align:center;padding:30px;color:#aaa}
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000e;
+ justify-content:center;
+ align-items:center;
+ padding:20px;
+ z-index:10;
+ overflow:auto;
+}
+.form{
+ background:#21182c;
+ padding:25px;
+ border-radius:15px;
+ width:100%;
+ max-width:390px;
+}
+input:not([type=checkbox]){
+ width:100%;
+ padding:13px;
+ margin:9px 0;
+ background:#100d18;
+ border:1px solid #594369;
+ color:white;
+ border-radius:8px;
+}
+.close{float:right;cursor:pointer}
+.form label{font-size:13px;line-height:1.6}
+#status{color:#d49aff;font-size:13px;line-height:1.5}
+#account{display:none}
+.nav-buttons{display:flex;gap:8px}
+.member{word-break:break-word}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">VIBRA <small>18+</small></div>
+ <div class="nav-buttons">
+  <button onclick="openForm('login')">LOGIN</button>
+  <button onclick="openForm('signup')">JOIN</button>
+ </div>
+</header>
+
+<div class="hero">
+ <h1>Meet People.<br><span>Make Connections.</span></h1>
+ <p>A social platform for adults to meet, connect and enjoy responsibly.</p>
+ <button onclick="openForm('signup')">CREATE ACCOUNT</button>
+</div>
+
+<section>
+ <h2>Explore VIBRA</h2>
+ <div class="grid">
+  <div class="card">
+   <h3>♡ Hookups</h3>
+   <p>Meet adults interested in casual connections.</p>
+  </div>
+  <div class="card">
+   <h3>✦ Discover</h3>
+   <p>Find people and make new connections.</p>
+  </div>
+  <div class="card">
+   <h3>▣ Entertainment</h3>
+   <p>Discover moderated, consensual adult entertainment.</p>
+  </div>
+  <div class="card">
+   <h3>♧ Private Chat</h3>
+   <p>Private communication between members.</p>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="card">
+  <h2>Our Community Rules</h2>
+  <p>✓ Adults 18+ only.</p>
+  <p>✓ Consent is compulsory.</p>
+  <p>✓ No leaked or non-consensual content.</p>
+  <p>✓ Respect everyone's privacy.</p>
+ </div>
+</section>
+
+<section id="account">
+ <div class="card member">
+  <h2>My VIBRA Account</h2>
+  <p id="userEmail"></p>
+  <p id="usernameDisplay"></p>
+  <button onclick="logout()">LOG OUT</button>
+ </div>
+</section>
+
+<footer>
+ © 2026 VIBRA Uganda | Adults only
+</footer>
+
+<div class="modal" id="modal">
+ <div class="form">
+  <span class="close" onclick="closeForm()">✕</span>
+
+  <h2 id="formTitle">Join VIBRA</h2>
+
+  <form id="authForm">
+   <input id="email" type="email" placeholder="Email address" required>
+   <input id="password" type="password"
+    placeholder="Password (minimum 8 characters)"
+    minlength="8" required>
+
+   <div id="signupFields">
+    <input id="username" placeholder="Username" minlength="3" maxlength="30">
+    <input id="dob" type="date">
+
+    <label>
+     <input id="ageConfirm" type="checkbox">
+     I confirm I am 18 or older.
+    </label>
+    <br><br>
+    <label>
+     <input id="terms" type="checkbox">
+     I agree to the community rules.
+    </label>
+   </div>
+
+   <br>
+   <button type="submit" id="submitBtn">CREATE ACCOUNT</button>
+   <p id="status"></p>
+  </form>
+ </div>
+</div>
+
+<script>
+// ==================================
+// VIBRA SUPABASE CONNECTION
+// ==================================
+
+const SUPABASE_URL =
+"https://revrcpqwqgdewsjazpjn.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_f4DOhI3WSVWuQKs4rVKVNQ_SUSwACae";
+
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+// ==================================
+// GENERAL FUNCTIONS
+// ==================================
+
+let mode = "signup";
+
+function openForm(type){
+ mode = type;
+
+ document.getElementById("modal").style.display="flex";
+
+ document.getElementById("signupFields").style.display =
+ type==="signup" ? "block" : "none";
+
+ document.getElementById("formTitle").innerText =
+ type==="signup" ? "Join VIBRA" : "Welcome Back";
+
+ document.getElementById("submitBtn").innerText =
+ type==="signup" ? "CREATE ACCOUNT" : "LOGIN";
+
+ document.getElementById("status").innerText="";
+}
+
+function closeForm(){
+ document.getElementById("modal").style.display="none";
+}
+
+function calculateAge(date){
+ const birth=new Date(date+"T00:00:00");
+ const now=new Date();
+
+ let age=now.getFullYear()-birth.getFullYear();
+
+ if(now.getMonth()<birth.getMonth() ||
+ (now.getMonth()===birth.getMonth() &&
+ now.getDate()<birth.getDate())){
+ age--;
+ }
+
+ return age;
+}
+
+// ==================================
+// SIGNUP AND LOGIN
+// ==================================
+
+document.getElementById("authForm").addEventListener(
+ "submit", async function(e){
+
+ e.preventDefault();
+
+ const status=document.getElementById("status");
+ const email=document.getElementById("email").value.trim();
+ const password=document.getElementById("password").value;
+
+ status.innerText="Connecting to VIBRA...";
+
+ try{
+
+ if(mode==="signup"){
+
+ const username=document.getElementById("username").value.trim();
+ const dob=document.getElementById("dob").value;
+
+ if(password.length<8)
+ throw Error("Password must have at least 8 characters.");
+
+ if(username.length<3)
+ throw Error("Username must have at least 3 characters.");
+
+ if(!dob || calculateAge(dob)<18)
+ throw Error("You must be at least 18 years old.");
+
+ if(!document.getElementById("ageConfirm").checked)
+ throw Error("Please confirm your age.");
+
+ if(!document.getElementById("terms").checked)
+ throw Error("Please accept the community rules.");
+
+ const {data,error}=await db.auth.signUp({
+  email:email,
+  password:password
+ });
+
+ if(error) throw error;
+
+ if(data.user){
+
+  const {error:profileError}=await db
+   .from("profiles")
+   .insert({
+    id:data.user.id,
+    username:username,
+    date_of_birth:dob,
+    country:"Uganda"
+   });
+
+  if(profileError) throw profileError;
+ }
+
+ status.innerText =
+ "Registration submitted! Check your email for confirmation.";
+
+ }else{
+
+ const {data,error}=await db.auth.signInWithPassword({
+  email:email,
+  password:password
+ });
+
+ if(error) throw error;
+
+ status.innerText="Welcome back!";
+
+ await showAccount(data.user);
+
+ closeForm();
+
+ }
+
+ }catch(error){
+
+ status.innerText=error.message;
+
+ }
+
+});
+
+// ==================================
+// MEMBER ACCOUNT
+// ==================================
+
+async function showAccount(user){
+
+ document.getElementById("account").style.display="block";
+
+ document.getElementById("userEmail").innerText =
+ "Email: "+user.email;
+
+ const {data,error}=await db
+  .from("profiles")
+  .select("username")
+  .eq("id",user.id)
+  .maybeSingle();
+
+ document.getElementById("usernameDisplay").innerText =
+ error ? "Profile unavailable" :
+ "Username: "+(data?.username || "Not set");
+}
+
+// ==================================
+// LOGOUT
+// ==================================
+
+async function logout(){
+
+ const {error}=await db.auth.signOut();
+
+ if(error){
+  alert(error.message);
+  return;
+ }
+
+ document.getElementById("account").style.display="none";
+
+}
+
+// ==================================
+// RESTORE SESSION
+// ==================================
+
+db.auth.onAuthStateChange((event,session)=>{
+
+ if(session?.user){
+
+  showAccount(session.user);
+
+ }else{
+
+  document.getElementById("account").style.display="none";
+
+ }
+
+});
+
+</script>
+
+</body>
+  </html>
